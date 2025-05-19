@@ -10,7 +10,6 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<TaskContext>(options =>
     options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")!));
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -21,15 +20,13 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles(); // ✅ Required to serve wwwroot (CSS, JS, etc.)
 app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapStaticAssets();
-
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
