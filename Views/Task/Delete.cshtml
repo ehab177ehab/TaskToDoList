@@ -1,0 +1,24 @@
+@model TaskToDoList.Models.TaskModel
+
+@{
+    ViewData["Title"] = "Delete Task";
+}
+
+<h2 class="mt-4 mb-4 text-danger">Delete Task</h2>
+
+<h4>Are you sure you want to delete this task?</h4>
+
+<div>
+    <h5>@Model.Title</h5>
+    <p>@Model.Description</p>
+    <p><strong>Due Date:</strong> @(Model.DueDate?.ToShortDateString() ?? "No due date")</p>
+    <p><strong>Status:</strong> @Model.Status</p>
+    <p><strong>Priority:</strong> @Model.Priority</p>
+    
+</div>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a href="/Task" class="btn btn-secondary ms-2">Cancel</a>
+</form>

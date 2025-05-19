@@ -1,0 +1,112 @@
+@using System.Text.Json
+@using TaskToDoList.Controllers
+
+@{
+    ViewData["Title"] = "Task Analytics";
+
+    var statusData = ViewBag.StatusData as List<TaskController.ChartData>;
+    var priorityData = ViewBag.PriorityData as List<TaskController.ChartData>;
+
+    var statusLabels = statusData?.Select(s => s.Label).ToArray() ?? Array.Empty<string>();
+    var statusCounts = statusData?.Select(s => s.Count).ToArray() ?? Array.Empty<int>();
+
+    var priorityMap = new Dictionary<string, int>
+{
+    { "High", 0 },
+    { "Medium", 0 },
+    { "Low", 0 }
+};
+
+foreach (var item in priorityData ?? new List<TaskController.ChartData>())
+{
+    if (priorityMap.ContainsKey(item.Label))
+    {
+        priorityMap[item.Label] = item.Count;
+    }
+}
+
+var priorityLabels = new[] { "High", "Medium", "Low" };
+var priorityCounts = priorityLabels.Select(label => priorityMap[label]).ToArray();
+}
+       
+<style>
+    body {
+        background-color: #f8f9fa;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+</style>
+   
+<h2 class="text-center mt-4 mb-2">
+    <i class="bi bi-bar-chart-fill text-primary"></i>
+    <span class="fw-bold text-dark">Task Analytics</span>
+</h2>
+
+<div class="container mt-3 mb-5">
+    <div class="row justify-content-center gap-4">
+        <!-- Status Chart Card -->
+        <div class="col-lg-5 col-md-6 p-4 bg-white rounded shadow text-center">
+            <h5 class="mb-3 fw-semibold">📊 Status Distribution</h5>
+            <canvas id="statusChart" style="max-height: 300px;"></canvas>
+        </div>
+
+        <!-- Priority Chart Card -->
+        <div class="col-lg-5 col-md-6 p-4 bg-white rounded shadow text-center">
+            <h5 class="mb-3 fw-semibold">📈 Priority Distribution</h5>
+            <canvas id="priorityChart" style="max-height: 300px;"></canvas>
+        </div>
+    </div>
+</div>
+      
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const statusChart = document.getElementById('statusChart').getContext('2d');
+        const priorityChart = document.getElementById('priorityChart').getContext('2d');
+
+        new Chart(statusChart, {
+            type: 'pie',
+            data: {
+                labels: @Html.Raw(JsonSerializer.Serialize(statusLabels)),
+                datasets: [{
+                    data: @Html.Raw(JsonSerializer.Serialize(statusCounts)),
+                    backgroundColor: ['#ffc107', '#0d6efd', '#28a745']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        new Chart(priorityChart, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(JsonSerializer.Serialize(priorityLabels)),
+                datasets: [{
+                    label: 'Task Count',
+                    data: @Html.Raw(JsonSerializer.Serialize(priorityCounts)),
+                    backgroundColor: ['#dc3545', '#ffc107', '#198754']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+}

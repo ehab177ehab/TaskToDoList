@@ -1,0 +1,46 @@
+@model List<TaskToDoList.Models.TaskModel>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info text-center shadow-sm">No tasks to show.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped shadow-sm">
+            <thead class="table-primary">
+                <tr>
+                    <th>📝 Title</th>
+                    <th>⏳ Status</th>
+                    <th>⚡ Priority</th>
+                    <th>📆 Due Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var task in Model)
+                {
+                    <tr>
+                        <td class="fw-semibold">@task.Title</td>
+                        <td>
+                            <span class="badge 
+                                @(task.Status == "Not Started" ? "bg-secondary" :
+                                  task.Status == "In Progress" ? "bg-warning text-dark" : 
+                                  "bg-success")">
+                                @task.Status
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge 
+                                @(task.Priority == "High" ? "bg-danger" : 
+                                  task.Priority == "Medium" ? "bg-warning text-dark" : 
+                                  "bg-success")">
+                                @task.Priority
+                            </span>
+                        </td>
+                        <td>@task.DueDate?.ToString("dd/MM/yyyy")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

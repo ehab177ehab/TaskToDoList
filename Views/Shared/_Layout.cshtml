@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - TaskToDoList</title>
+
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow-x: hidden;
+            background-color: #f8f9fa;
+        }
+
+        footer {
+            z-index: 1;
+        }
+
+        .navbar .nav-link {
+            transition: all 0.2s ease-in-out;
+        }
+
+        .navbar .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 0.25rem;
+            color: #ffffff !important;
+        }
+
+        /* 🌙 DARK MODE */
+        body.dark-mode {
+            background-color: #121212 !important;
+            color: #f0f0f0;
+        }
+
+        body.dark-mode .navbar {
+            background-color: #1f1f1f !important;
+        }
+
+        body.dark-mode .nav-link {
+            color: #f0f0f0 !important;
+        }
+
+        body.dark-mode .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode footer {
+            background-color: #1f1f1f;
+            color: #cccccc;
+        }
+
+        body.dark-mode .bg-white,
+        body.dark-mode .bg-light,
+        body.dark-mode .card,
+        body.dark-mode .dashboard-card,
+        body.dark-mode .tab-pane,
+        body.dark-mode .tab-content {
+            background-color: #1c1c1c !important;
+            color: #f0f0f0;
+            border-color: #333 !important;
+        }
+
+        body.dark-mode .table {
+            color: #f0f0f0;
+        }
+
+        body.dark-mode .table-striped > tbody > tr:nth-of-type(odd) {
+            background-color: #2d2d2d;
+        }
+
+        body.dark-mode thead {
+            background-color: #2d2d2d !important;
+            color: #fff;
+        }
+
+        /* Tabs styling */
+        body.dark-mode .nav-tabs {
+            border-bottom: 1px solid #333;
+        }
+
+        body.dark-mode .nav-tabs .nav-link {
+            color: #ddd;
+            background-color: transparent;
+            border: 1px solid #333;
+        }
+
+        body.dark-mode .nav-tabs .nav-link.active {
+            background-color: #333;
+            color: #fff;
+            border-color: #555 #555 #222;
+            font-weight: bold;
+        }
+
+        body.dark-mode .nav-tabs .nav-link:hover {
+            background-color: #2a2a2a;
+            color: #fff;
+        }
+
+        .form-switch .form-check-input {
+            cursor: pointer;
+        }
+        body.dark-mode .text-muted,
+        body.dark-mode .text-secondary,
+        body.dark-mode .text-dark {
+            color: #cccccc !important;
+        }
+    </style>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- Header -->
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-dark" style="background-color: #0056b3;">
+            <div class="container">
+                <a class="navbar-brand text-white fw-bold d-flex align-items-center" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-check2-square me-2"></i> TaskToDoList
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+                    <ul class="navbar-nav mb-2 mb-sm-0">
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" asp-controller="Task" asp-action="Index">Tasks</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="/Task/Create">Add Task</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" asp-controller="Task" asp-action="Analytics">Analytics</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="/Home/About">About</a>
+                        </li>
+                    </ul>
+
+                    <!-- 🌙 Dark Mode Toggle -->
+                    <div class="form-check form-switch text-white">
+                        <input class="form-check-input" type="checkbox" id="darkModeToggle">
+                        <label class="form-check-label ms-2" for="darkModeToggle">Dark Mode</label>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main role="main" class="container pb-4">
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-light text-center text-muted py-2 mt-auto border-top">
+        <div class="container">
+            <small>&copy; 2025 - TaskToDoList - <a asp-controller="Home" asp-action="Privacy">Privacy</a></small>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <!-- 🌙 Dark Mode Script -->
+    <script>
+        const toggle = document.getElementById("darkModeToggle");
+        const body = document.body;
+
+        if (localStorage.getItem("dark-mode") === "true") {
+            body.classList.add("dark-mode");
+            toggle.checked = true;
+        }
+
+        toggle.addEventListener("change", () => {
+            body.classList.toggle("dark-mode");
+            localStorage.setItem("dark-mode", toggle.checked);
+        });
+    </script>
+
+</body>
+</html>

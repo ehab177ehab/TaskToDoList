@@ -1,0 +1,122 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    var dueToday = ViewBag.DueToday as List<TaskToDoList.Models.TaskModel>;
+    var overdue = ViewBag.Overdue as List<TaskToDoList.Models.TaskModel>;
+    var pending = ViewBag.Pending as List<TaskToDoList.Models.TaskModel>;
+    var completed = ViewBag.Completed as List<TaskToDoList.Models.TaskModel>;
+}
+
+<style>
+    body {
+        background-color: #f8f9fa;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+</style>
+
+<div class="container pt-4">
+
+    <div class="text-center mb-4">
+        <h2 class="fw-bold text-primary">
+            <i class="bi bi-kanban"></i> Task Overview
+        </h2>
+        <p class="text-muted">Today is @ViewData["Date"]</p>
+    </div>
+    <div class="row justify-content-center">
+    <div class="col-md-10 text-center fs-6 fw-semibold mb-2">
+
+        <span class="text-dark me-2">
+            <i class="bi bi-bar-chart-line text-primary me-1"></i> Task Summary:
+        </span>
+
+        <span class="ms-1 text-primary">📅 Due Today: @dueToday?.Count</span>
+        <span class="ms-3 text-danger">⏰ Overdue: @overdue?.Count</span>
+        <span class="ms-3 text-warning">🕓 Pending: @pending?.Count</span>
+        <span class="ms-3 text-success">✅ Completed: @completed?.Count</span>
+    </div>
+</div>
+<br>
+
+    <!-- Sort Dropdown -->
+ <div class="text-center mb-3">
+    <label class="me-2 fw-semibold">Sort by:</label>
+    <select class="form-select d-inline-block w-auto" id="sortSelect">
+        <option value="dateAsc">Due Date ↑</option>
+        <option value="dateDesc">Due Date ↓</option>
+        <option value="priorityHigh">Priority: High → Low</option>
+        <option value="priorityLow">Priority: Low → High</option>
+    </select>
+</div>
+
+
+    <!-- Navigation Tabs -->
+    <ul class="nav nav-tabs justify-content-center mb-2 border-0" id="taskTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active fs-5 py-2 px-4" id="due-tab" data-bs-toggle="tab" data-bs-target="#dueToday" type="button" role="tab">📅 Due Today</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link fs-5 py-2 px-4" id="overdue-tab" data-bs-toggle="tab" data-bs-target="#overdue" type="button" role="tab">⏰ Overdue</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link fs-5 py-2 px-4" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab">🕓 Pending</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link fs-5 py-2 px-4" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab">✅ Completed</button>
+        </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content" id="taskTabContent">
+
+        <div class="tab-pane fade show active" id="dueToday" role="tabpanel">
+            @await Html.PartialAsync("_TaskTablePartial", dueToday)
+        </div>
+
+        <div class="tab-pane fade" id="overdue" role="tabpanel">
+            @await Html.PartialAsync("_TaskTablePartial", overdue)
+        </div>
+
+        <div class="tab-pane fade" id="pending" role="tabpanel">
+            @await Html.PartialAsync("_TaskTablePartial", pending)
+        </div>
+
+        <div class="tab-pane fade" id="completed" role="tabpanel">
+            @await Html.PartialAsync("_TaskTablePartial", completed)
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    document.getElementById("sortSelect").addEventListener("change", function () {
+        const value = this.value;
+        const tabId = document.querySelector('.tab-pane.active').id;
+        const table = document.querySelector(`#${tabId} table tbody`);
+        const rows = Array.from(table.querySelectorAll("tr"));
+
+        rows.sort((a, b) => {
+            const getDate = (row) => {
+    const text = row.children[3]?.textContent.trim(); // e.g. 22/05/2025
+    if (!text) return new Date("2100-01-01");
+
+    const [day, month, year] = text.split("/").map(Number);
+    return new Date(year, month - 1, day); // JS Date: year, month (0-based), day
+};
+            const getPriority = (row) => row.children[2]?.textContent.trim();
+
+            if (value === "dateAsc") return getDate(a) - getDate(b);
+            if (value === "dateDesc") return getDate(b) - getDate(a);
+
+            const priorities = { High: 3, Medium: 2, Low: 1 };
+            const pa = priorities[getPriority(a)] || 0;
+            const pb = priorities[getPriority(b)] || 0;
+
+            return value === "priorityHigh" ? pb - pa : pa - pb;
+        });
+
+        rows.forEach(row => table.appendChild(row));
+    });
+</script>
+}
+
