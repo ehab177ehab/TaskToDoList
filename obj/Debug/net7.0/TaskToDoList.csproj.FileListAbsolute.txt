@@ -1,11 +1,5 @@
-C:\Users\ehabs\OneDrive\Desktop\web programming\TaskToDoList\bin\Debug\net7.0\out\web.config
 C:\Users\ehabs\OneDrive\Desktop\web programming\TaskToDoList\bin\Debug\net7.0\appsettings.Development.json
 C:\Users\ehabs\OneDrive\Desktop\web programming\TaskToDoList\bin\Debug\net7.0\appsettings.json
-C:\Users\ehabs\OneDrive\Desktop\web programming\TaskToDoList\bin\Debug\net7.0\out\appsettings.Development.json
-C:\Users\ehabs\OneDrive\Desktop\web programming\TaskToDoList\bin\Debug\net7.0\out\appsettings.json
-C:\Users\ehabs\OneDrive\Desktop\web programming\TaskToDoList\bin\Debug\net7.0\out\TaskToDoList.deps.json
-C:\Users\ehabs\OneDrive\Desktop\web programming\TaskToDoList\bin\Debug\net7.0\out\TaskToDoList.runtimeconfig.json
-C:\Users\ehabs\OneDrive\Desktop\web programming\TaskToDoList\bin\Debug\net7.0\out\TaskToDoList.staticwebassets.endpoints.json
 C:\Users\ehabs\OneDrive\Desktop\web programming\TaskToDoList\bin\Debug\net7.0\TaskToDoList.staticwebassets.runtime.json
 C:\Users\ehabs\OneDrive\Desktop\web programming\TaskToDoList\bin\Debug\net7.0\TaskToDoList.staticwebassets.endpoints.json
 C:\Users\ehabs\OneDrive\Desktop\web programming\TaskToDoList\bin\Debug\net7.0\TaskToDoList.exe
